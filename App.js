@@ -9,6 +9,7 @@ import bullBoard_func from "./Bull/BullBoard.js";
 databaseConnection_func();
 console.log("test")
 
+
 const serverAdapter = bullBoard_func()
 
 app.use('/admin/queues', serverAdapter.getRouter());
