@@ -7,7 +7,7 @@ import bullBoard_func from "./Bull/BullBoard.js";
 
 
 databaseConnection_func();
-
+console.log("test")
 
 const serverAdapter = bullBoard_func()
 
