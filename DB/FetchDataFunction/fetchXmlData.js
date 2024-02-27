@@ -1,6 +1,6 @@
-import get_users from "./users.js";
-import get_categories from "./categories.js";
-import get_tags from "./tags.js";
+import get_users from "../Queries/users.js";
+import get_categories from "../Queries/categories.js";
+import get_tags from "../Queries/tags.js";
 
 
 
@@ -37,12 +37,11 @@ const fetchXmlData = async (website_id) => {
   }
 
   return {
-    users : users,
-    joinCategries : joinCategries,
-    categories : categories,
-    joinTags : joinTags,
-    tags : tags,
-
+    users ,
+    joinCategries ,
+    categories ,
+    joinTags ,
+    tags ,
   }
 
 }

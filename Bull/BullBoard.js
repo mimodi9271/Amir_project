@@ -2,10 +2,10 @@ import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter.js";
 import { ExpressAdapter } from "@bull-board/express";
 import { Queue , Worker , FlowProducer } from 'bullmq';
-import express from "express"
-const app = express();
+// import express from "express"
+// const app = express();
 
-const bullBoard_func = () => {
+const setupBullBoard = (app) => {
     const scrapequeue = new Queue("scrape");
     const zipqueue = new Queue("zip");
     const mailqueue = new Queue("mailer");
@@ -16,13 +16,13 @@ const bullBoard_func = () => {
         queues: [new BullMQAdapter(scrapequeue) , new BullMQAdapter(zipqueue) , new BullMQAdapter(mailqueue)],
         serverAdapter: serverAdapter,
       });
-    
-    
-    
-    return serverAdapter;
+   
+
+    app.use('/admin/queues', serverAdapter.getRouter());
+
 }
 
-export default bullBoard_func;
+export default setupBullBoard;
 
 
 

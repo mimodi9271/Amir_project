@@ -1,6 +1,6 @@
 import { compareAsc, format, newDate } from 'date-fns-jalali'
 
-function createpagepostURl(domain , id , slug , title , pageId , date , topic){
+function getPagePostURl(domain , id , slug , title , pageId , date , topic){
     let d = format(date, 'yyyy-MM-dd');
 
     return {
@@ -13,4 +13,4 @@ function createpagepostURl(domain , id , slug , title , pageId , date , topic){
     }
   }
 
-export  default createpagepostURl;
+export  default getPagePostURl;

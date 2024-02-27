@@ -1,7 +1,7 @@
 import redisConfig from "../Config/redisConf.js";
 import  Redis  from "ioredis";
 
-const redisController = async () => {
+const checkBusyStatus = async () => {
 const redisConnection = new Redis(redisConfig);
 
 let redisStatus = "";
@@ -25,4 +25,4 @@ let redisStatus = "";
   return redisConnection;
 }
 
-export default redisController;
+export default checkBusyStatus;

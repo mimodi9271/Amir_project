@@ -1,6 +1,6 @@
-import { pool } from "./databaseConnection.js"
+import { pool } from "../databaseConnection.js"
 
-const get_WebId_Fun = async (domain) =>{
+const getWebsiteId = async (domain) =>{
     try {
         const result =  await pool.query(`SELECT * FROM domains where domain = ?` , [domain]);
         const website_id = result[0][0].website_id;
@@ -11,4 +11,4 @@ const get_WebId_Fun = async (domain) =>{
     
 }
 
-export default get_WebId_Fun;
+export default getWebsiteId;

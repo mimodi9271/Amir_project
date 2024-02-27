@@ -1,17 +1,16 @@
-import { pool } from "./databaseConnection.js"
+import { pool } from "../databaseConnection.js"
 
 
-const get_categories = async (website_id) => {
+const getCategories = async (website_id) => {
     try {
         const joinCategries = await pool.query(`
         SELECT categories.id, categories.title , categories.slug , post_categories.post_id , categories.parent_id
         FROM categories
         INNER JOIN post_categories 
         ON  categories.id = post_categories.category_id
-        AND categories.website_id = ${website_id}
-        `)
+        AND categories.website_id = ? ` , [website_id])
 
-        const categories = await pool.query(`SELECT * FROM categories where website_id = ${website_id}`);
+        const categories = await pool.query(`SELECT * FROM categories where website_id = ?` , [website_id]);
 
         return { joinCategries : joinCategries[0] , categories : categories[0] }
     } catch (error) {
@@ -20,4 +19,4 @@ const get_categories = async (website_id) => {
 }
 
 
-export default get_categories;
+export default getCategories;
