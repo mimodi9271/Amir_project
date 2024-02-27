@@ -1,4 +1,4 @@
-function createpageURl(domain , id , slug , title){ 
+function getPageURl(domain , id , slug , title){ 
     return {
       id : id,
       webUrl : `https://www.${domain}/${id}-${slug}`,
@@ -8,4 +8,4 @@ function createpageURl(domain , id , slug , title){
     }
   }
 
-  export default createpageURl;
+  export default getPageURl;

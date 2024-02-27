@@ -1,18 +1,17 @@
 import express from "express"
 const app = express();
-import home from "./Route/home.js";
-import { databaseConnection_func } from "./Queries/databaseConnection.js";
+import home from "./Routes/home.js";
+import { databaseConnection } from "./DB/databaseConnection.js";
 import 'dotenv/config';
-import bullBoard_func from "./Bull/BullBoard.js";
+import setupBullBoard from "./Bull/BullBoard.js";
 
 
-databaseConnection_func();
-console.log("test")
+
+databaseConnection();
 
 
-const serverAdapter = bullBoard_func()
+setupBullBoard(app)
 
-app.use('/admin/queues', serverAdapter.getRouter());
 app.use(express.json())
 app.use( "/" , home );
 

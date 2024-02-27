@@ -2,21 +2,17 @@ import fs from "fs"
 import 'dotenv/config';
 import WXRGen from "wxrgen"
 import getImgSrc from 'get-img-src';
-import get_WebId_Fun from "../Queries/websiteId.js";
-import get_users from "../Queries/users.js";
-import get_categories from "../Queries/categories.js";
-import get_tags from "../Queries/tags.js";
-import get_pages from "../Queries/pages.js";
-import get_pagepost from "../Queries/pagePosts.js";
 import path from "path";
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import fetchXmlData from "../Queries/fetchXmlData.js";
+import fetchXmlData from "../DB/FetchDataFunction/fetchXmlData.js";
 
-const xmlCreator = async (pages , page_posts , website_id , domain) => {
+const wordpressBackup = async (pages , page_posts , website_id , domain) => {
 
   let __dirname = dirname(fileURLToPath(import.meta.url));
-  __dirname = __dirname.slice(0 , __dirname.length-4)
+  console.log(__dirname , 111)
+  __dirname = __dirname.slice(0 , __dirname.length-10)
+  console.log(__dirname)
 
   const generator = new WXRGen({
         name: 'localhost',
@@ -174,4 +170,4 @@ const xmlCreator = async (pages , page_posts , website_id , domain) => {
 
 }
 
-export default xmlCreator;
+export default wordpressBackup;

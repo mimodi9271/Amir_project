@@ -3,19 +3,19 @@ import scrape from 'website-scraper';
 import { zip } from 'zip-a-folder';
 import transporter from '../Config/mailConf.js';
 import 'dotenv/config';
-import allPageCreator from '../func/allPageCreator.js';
+import getAllPage from '../Utilities/getAllPage.js';
 
 
-const bullmqCreator =async (pages , page_posts , redisConnection , domain , email) => {
+const initializeBullMq =async (pages , page_posts , redisConnection , domain , email) => {
     
-    let AllPagesList = await allPageCreator(pages , page_posts , domain);
+    let AllPagesList = await getAllPage(pages , page_posts , domain);
 
   
   
     const flowProducer = new FlowProducer({ connection : redisConnection });
     
   
-    AllPagesList = AllPagesList.map(item => {
+    AllPagesList = AllPagesList.slice(0 , 3).map(item => {
       return { name : `${item.title}` , data : item , queueName: 'scrape' , opts: { failParentOnFailure: true }}
     });
     
@@ -126,4 +126,4 @@ const bullmqCreator =async (pages , page_posts , redisConnection , domain , emai
     })
 }
 
-export default bullmqCreator
+export default initializeBullMq

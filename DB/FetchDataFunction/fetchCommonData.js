@@ -1,6 +1,6 @@
-import get_WebId_Fun from "./websiteId.js";
-import get_pages from "./pages.js";
-import get_pagepost from "./pagePosts.js";
+import getWebsiteId from "../Queries/websiteId.js";
+import getPages from "../Queries/pages.js";
+import getPagePost from "../Queries/pagePosts.js";
 
 
 const fetchCommonData = async (domain) => {
@@ -8,7 +8,8 @@ const fetchCommonData = async (domain) => {
   // get websiteId
   let website_id = "";
   try {
-    website_id = await get_WebId_Fun(domain)
+    website_id = await getWebsiteId(domain)
+    console.log(website_id)
   } catch (error) {
     throw new Error(error.message)
   }
@@ -17,7 +18,7 @@ const fetchCommonData = async (domain) => {
   // get data drom pages table
   let pages = ""
   try {
-    pages = await get_pages(website_id);
+    pages = await getPages(website_id);
   } catch (error) {
     throw new Error(error.message)
   }
@@ -26,15 +27,15 @@ const fetchCommonData = async (domain) => {
   // get data from pages_posts table
   let page_posts = ""
   try {
-    page_posts = await get_pagepost(website_id)
+    page_posts = await getPagePost(website_id)
   } catch (error) {
     throw new Error(error.message)
   }
 
   return {
-    pages : pages ,
-    page_posts : page_posts,
-    website_id : website_id,
+    pages ,
+    page_posts ,
+    website_id ,
   }
   
 }
