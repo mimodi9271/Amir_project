@@ -5,7 +5,7 @@ import { Queue , Worker , FlowProducer } from 'bullmq';
 // import express from "express"
 // const app = express();
 
-const setupBullBoard = (app) => {
+const initializeBullBoard = (app) => {
     const scrapequeue = new Queue("scrape");
     const zipqueue = new Queue("zip");
     const mailqueue = new Queue("mailer");
@@ -22,7 +22,7 @@ const setupBullBoard = (app) => {
 
 }
 
-export default setupBullBoard;
+export default initializeBullBoard;
 
 
 

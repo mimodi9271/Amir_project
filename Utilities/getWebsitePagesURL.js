@@ -1,8 +1,7 @@
 import getPageURl from "./getPageURl.js";
-import getPagePost from "./getPagePostURl.js";
 import getPagePostURl from "./getPagePostURl.js";
 
-const getAllPage = async(pages , page_posts , domain) => {
+const getWebsitePagesURL = async(pages , page_posts , domain) => {
     const AllPagesList = [];
 
     pages.map(item => {
@@ -21,4 +20,4 @@ const getAllPage = async(pages , page_posts , domain) => {
     return AllPagesList;
 }
 
-export default getAllPage;
+export default getWebsitePagesURL;

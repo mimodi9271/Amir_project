@@ -1,16 +1,13 @@
-import { Queue , Worker , FlowProducer, tryCatch } from 'bullmq';
+import { Worker , FlowProducer} from 'bullmq';
 import scrape from 'website-scraper';
 import { zip } from 'zip-a-folder';
-import transporter from '../Config/mailConf.js';
+import transporter from '../config/mailConf.js';
 import 'dotenv/config';
-import getAllPage from '../Utilities/getAllPage.js';
+import getWebsitePagesURL from '../utilities/getWebsitePagesURL.js';
 
-
-const initializeBullMq =async (pages , page_posts , redisConnection , domain , email) => {
+const htmlBackup =async (pages , page_posts , redisConnection , domain , email) => {
     
-    let AllPagesList = await getAllPage(pages , page_posts , domain);
-
-  
+    let AllPagesList = await getWebsitePagesURL(pages , page_posts , domain);
   
     const flowProducer = new FlowProducer({ connection : redisConnection });
     
@@ -65,7 +62,6 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
       throw new Error("cannot make queue")
     }
   
-    
   
     const scrapeworker = new Worker('scrape', async job => {
         let options = {
@@ -126,4 +122,4 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
     })
 }
 
-export default initializeBullMq
+export default htmlBackup;

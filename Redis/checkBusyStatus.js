@@ -1,8 +1,4 @@
-import redisConfig from "../Config/redisConf.js";
-import  Redis  from "ioredis";
-
-const checkBusyStatus = async () => {
-const redisConnection = new Redis(redisConfig);
+const checkBusyStatus = async (redisConnection) => {
 
 let redisStatus = "";
 
@@ -22,7 +18,7 @@ let redisStatus = "";
     throw new Error("cannot set redis to busy")
   }
     
-  return redisConnection;
+  return redisStatus;
 }
 
 export default checkBusyStatus;

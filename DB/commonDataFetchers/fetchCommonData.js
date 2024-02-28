@@ -1,6 +1,6 @@
-import getWebsiteId from "../Queries/websiteId.js";
-import getPages from "../Queries/pages.js";
-import getPagePost from "../Queries/pagePosts.js";
+import getWebsiteId from "../queries/websiteId.js";
+import getPages from "../queries/pages.js";
+import getPagePosts from "../queries/pagePosts.js";
 
 
 const fetchCommonData = async (domain) => {
@@ -27,7 +27,7 @@ const fetchCommonData = async (domain) => {
   // get data from pages_posts table
   let page_posts = ""
   try {
-    page_posts = await getPagePost(website_id)
+    page_posts = await getPagePosts(website_id)
   } catch (error) {
     throw new Error(error.message)
   }

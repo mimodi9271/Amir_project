@@ -1,6 +1,6 @@
-import get_users from "../Queries/users.js";
-import get_categories from "../Queries/categories.js";
-import get_tags from "../Queries/tags.js";
+import get_users from "../queries/users.js";
+import get_categories from "../queries/categories.js";
+import get_tags from "../queries/tags.js";
 
 
 

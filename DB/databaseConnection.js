@@ -1,9 +1,9 @@
 import mysql from "mysql2";
 import 'dotenv/config';
-import dbConfig from "../Config/dbConf.js";
+import dbConfig from "../config/dbConf.js";
 
 
-export const databaseConnection = () => {
+const databaseConnection = () => {
     mysql.createPool(dbConfig).promise()
 }
 
@@ -14,3 +14,6 @@ export const pool = mysql.createPool({
     password : "",
     database: process.env.DATA_BASE,
   }).promise()
+
+
+export default databaseConnection;

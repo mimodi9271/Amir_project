@@ -5,14 +5,12 @@ import getImgSrc from 'get-img-src';
 import path from "path";
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import fetchXmlData from "../DB/FetchDataFunction/fetchXmlData.js";
+import fetchXmlData from "../db/commonDataFetchers/fetchXmlData.js";
 
 const wordpressBackup = async (pages , page_posts , website_id , domain) => {
 
   let __dirname = dirname(fileURLToPath(import.meta.url));
-  console.log(__dirname , 111)
-  __dirname = __dirname.slice(0 , __dirname.length-10)
-  console.log(__dirname)
+  __dirname = __dirname.slice(0 , __dirname.length-7)
 
   const generator = new WXRGen({
         name: 'localhost',
