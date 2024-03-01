@@ -1,6 +1,5 @@
-import { pool } from "../databaseConnection.js"
 
-const getTags = async (website_id) => {
+const getTags = async (website_id , pool) => {
 
     try {
         const joinTags = await pool.query(`

@@ -1,23 +1,27 @@
 import express from "express"
 const app = express();
-import home from "./routes/home.js";
-import databaseConnection from "./db/databaseConnection.js";
+import initializeDatabase from "./db/initializeDatabase.js";
 import 'dotenv/config';
 import initializeBullBoard from "./initialize/initializeBullBoard.js";
 import initializeRedis from "./initialize/initializeRedis.js";
 import { initializeRouter } from "./routes/home.js";
 
 
+const pool = await initializeDatabase();
 
-databaseConnection();
 
 
 initializeBullBoard(app);
 const redisConnection = initializeRedis();
 
+const dependencies = {
+    redisConnection ,
+    app,
+    pool
+}
+
 app.use(express.json())
-initializeRouter(redisConnection)
-app.use( "/" , home )
+initializeRouter(dependencies)
 
 
 app.listen(process.env.PORT , () => console.log(`app is listening on port ${process.env.PORT}`))

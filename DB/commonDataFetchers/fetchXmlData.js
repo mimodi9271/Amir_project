@@ -4,11 +4,11 @@ import get_tags from "../queries/tags.js";
 
 
 
-const fetchXmlData = async (website_id) => {
+const fetchXmlData = async (website_id , pool) => {
 
   let users = "";
   try {
-    users = await get_users(website_id)
+    users = await get_users(website_id , pool)
   } catch (error) {
     throw new Error(error.message)
   }
@@ -17,7 +17,7 @@ const fetchXmlData = async (website_id) => {
   let joinCategries = "";
   let categories = "";
   try {
-    const result = await get_categories(website_id);
+    const result = await get_categories(website_id , pool);
     // console.log(result.categories)
     joinCategries = result.joinCategries;
     categories = result.categories;
@@ -29,7 +29,7 @@ const fetchXmlData = async (website_id) => {
   let joinTags = "";
   let tags = "";
   try {
-    const result = await get_tags(website_id);
+    const result = await get_tags(website_id , pool);
     joinTags = result.joinTags;
     tags = result.tags;
   } catch (error) {

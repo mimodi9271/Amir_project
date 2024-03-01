@@ -1,7 +1,6 @@
-import { pool } from "../databaseConnection.js"
 
 
-const getCategories = async (website_id) => {
+const getCategories = async (website_id , pool) => {
     try {
         const joinCategries = await pool.query(`
         SELECT categories.id, categories.title , categories.slug , post_categories.post_id , categories.parent_id

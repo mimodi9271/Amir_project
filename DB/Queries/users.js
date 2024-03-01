@@ -1,7 +1,6 @@
-import { pool } from "../databaseConnection.js"
 
 
-const getUsers = async(website_id) => {
+const getUsers = async(website_id , pool) => {
     try {
         const users = await pool.query(`
         SELECT users.name , users.last_name , users.id , users.username , users.email_address , website_staff.website_id

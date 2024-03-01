@@ -1,9 +1,10 @@
 import { Worker , FlowProducer} from 'bullmq';
 import scrape from 'website-scraper';
 import { zip } from 'zip-a-folder';
-import transporter from '../config/mailConf.js';
+import transporter from '../../config/mailConf.js';
 import 'dotenv/config';
-import getWebsitePagesURL from '../utilities/getWebsitePagesURL.js';
+import getWebsitePagesURL from '../../utilities/getWebsitePagesURL.js';
+import backupFinishEmail from '../../emails/backupFinishEmail.js';
 
 const htmlBackup =async (pages , page_posts , redisConnection , domain , email) => {
     
@@ -93,6 +94,7 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
   
     const zipworker = new Worker('zip', async job => {
       try {
+        await redisConnection.set("busy" , "no");
         await zip( `./${domain}` , `./${domain}.zip` );
       } catch (error) {
         throw new Error("the zip has a problem")
@@ -103,18 +105,10 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
 
   
     const mailworker = new Worker("mailer" , async job => {
-        const mailData = {
-            from: process.env.mymailname_mailer,
-            to: email,
-            subject: 'Sending Email using Node.js',
-            text: 'That was easy!',
-        };
-
         try {
-            const res = await transporter.sendMail(mailData);
-            if(res) console.log("the url has send")
+            await backupFinishEmail(email)
         } catch (error) {
-            throw new Error("mailer has a problem")
+            throw new Error(error.message)
         }
 
     }, {
