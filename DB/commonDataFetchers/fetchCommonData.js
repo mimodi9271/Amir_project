@@ -9,7 +9,6 @@ const fetchCommonData = async (domain , pool) => {
   let website_id = "";
   try {
     website_id = await getWebsiteId(domain , pool)
-    console.log(website_id)
   } catch (error) {
     throw new Error(error.message)
   }

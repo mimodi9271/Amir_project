@@ -18,7 +18,6 @@ const fetchXmlData = async (website_id , pool) => {
   let categories = "";
   try {
     const result = await get_categories(website_id , pool);
-    // console.log(result.categories)
     joinCategries = result.joinCategries;
     categories = result.categories;
   } catch (error) {

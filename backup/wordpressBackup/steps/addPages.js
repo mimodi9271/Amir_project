@@ -7,11 +7,9 @@ const addpages = (generator , pages) => {
   
         let slug = `http://localhost/rahatamooz2/?page_id=${item.id}`;
         let imgsercspage = getImgSrc(item.html);
-        // console.log(imgsercs);
   
         imgsercspage.map(url => {
           generator.addAttachment({
-            id : generator.rId(),
             url : url,
             title : item.title,
             attachment_type : "product_image"
@@ -20,7 +18,6 @@ const addpages = (generator , pages) => {
   
   
         generator.addPage({
-            id : generator.rId(),
             url: ``,
             title: item.title,
             author: `wordpress`,

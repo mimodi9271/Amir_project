@@ -66,7 +66,7 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , pool) 
   fs.mkdir(path.join(__dirname, `${domain}`) , {} , (err) => {
     if (err) console.log(err)
     fs.writeFile(path.join(__dirname, `${domain}`, `myxml.xml`), xmlstring , "utf-8" , (err , res) => {
-      console.log(err , "..........");
+      if (err) console.log(err , "..........");
     })
   });
 
