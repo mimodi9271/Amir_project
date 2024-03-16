@@ -1,6 +1,6 @@
 import fs from "fs"
 import 'dotenv/config';
-import WXRGen from "wxrgen"
+// import WXRGen from "wxrgen"
 import path from "path";
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,13 +10,14 @@ import addCategories from "./steps/addCategories.js";
 import addTags from "./steps/addTags.js";
 import addpages from "./steps/addPages.js";
 import addPagePosts from "./steps/addPagePosts.js";
+import Generator  from "../../wxrGenerator/wxrGenerator.js"
 
 const wordpressBackup = async (pages , page_posts , website_id , domain , pool) => {
 
   let __dirname = dirname(fileURLToPath(import.meta.url));
   __dirname = __dirname.slice(0 , __dirname.length-22)
 
-  const generator = new WXRGen({
+  const generator = new Generator({
         name: 'localhost',
         url: 'http://localhost',
         description: 'This is my local wordpress website',
@@ -46,6 +47,7 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , pool) 
 
   // add categories to xml
   addCategories(generator , categories)
+  console.log(categories.length)
 
   
   // add tags to xml
