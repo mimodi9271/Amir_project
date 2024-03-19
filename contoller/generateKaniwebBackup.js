@@ -6,7 +6,7 @@ import htmlBackup from "../backup/htmlBackup/htmlBackup.js";
 
 
 const generateKaniwebBackup = async (dependencies , domain , email) => {
-    const { redisConnection , app , pool } = dependencies;
+    const { redisConnection , app , mysqlConnectionPool } = dependencies;
     
   
     try {
@@ -21,7 +21,7 @@ const generateKaniwebBackup = async (dependencies , domain , email) => {
     let page_posts = "";
     let website_id = ""
     try {
-      const result = await fetchCommonData(domain , pool);
+      const result = await fetchCommonData(domain , mysqlConnectionPool);
       pages = result.pages;
       page_posts = result.page_posts;
       website_id = result.website_id;
@@ -29,10 +29,9 @@ const generateKaniwebBackup = async (dependencies , domain , email) => {
         throw new Error(error.message)
     }
   
-    
   
     try {
-      await wordpressBackup(pages , page_posts , website_id , domain , pool)
+      await wordpressBackup(pages , page_posts , website_id , domain , mysqlConnectionPool)
     } catch (error) {
         throw new Error(error.message)
 

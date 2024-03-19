@@ -12,7 +12,7 @@ import addpages from "./steps/addPages.js";
 import addPagePosts from "./steps/addPagePosts.js";
 import Generator  from "../../wxrGenerator/wxrGenerator.js"
 
-const wordpressBackup = async (pages , page_posts , website_id , domain , pool) => {
+const wordpressBackup = async (pages , page_posts , website_id , domain , mysqlConnectionPool) => {
 
   let __dirname = dirname(fileURLToPath(import.meta.url));
   __dirname = __dirname.slice(0 , __dirname.length-22)
@@ -30,7 +30,7 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , pool) 
   let joinTags = "";
   let tags = "";
   try {
-    const result = await fetchXmlData(website_id , pool);
+    const result = await fetchXmlData(website_id , mysqlConnectionPool);
     users = result.users;
     joinCategries = result.joinCategries;
     categories = result.categories;
@@ -47,7 +47,6 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , pool) 
 
   // add categories to xml
   addCategories(generator , categories)
-  console.log(categories.length)
 
   
   // add tags to xml
@@ -66,9 +65,7 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , pool) 
 
 
   fs.mkdir(path.join(__dirname, `${domain}`) , {} , (err) => {
-    if (err) console.log(err)
     fs.writeFile(path.join(__dirname, `${domain}`, `myxml.xml`), xmlstring , "utf-8" , (err , res) => {
-      if (err) console.log(err , "..........");
     })
   });
 

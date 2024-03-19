@@ -7,7 +7,7 @@ import initializeRedis from "./initialize/initializeRedis.js";
 import { initializeRouter } from "./routes/home.js";
 
 
-const pool = await initializeDatabase();
+const mysqlConnectionPool = await initializeDatabase();
 
 
 
@@ -17,7 +17,7 @@ const redisConnection = initializeRedis();
 const dependencies = {
     redisConnection ,
     app,
-    pool
+    mysqlConnectionPool
 }
 
 app.use(express.json())

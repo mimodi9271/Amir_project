@@ -8,12 +8,12 @@ import backupFinishEmail from '../../emails/backupFinishEmail.js';
 
 const htmlBackup =async (pages , page_posts , redisConnection , domain , email) => {
     
-    let AllPagesList = await getWebsitePagesURL(pages , page_posts , domain);
+    let allPagesList = await getWebsitePagesURL(pages , page_posts , domain);
   
     const flowProducer = new FlowProducer({ connection : redisConnection });
     
   
-    AllPagesList = AllPagesList.slice(0 , 3).map(item => {
+    allPagesList = allPagesList.slice(0 , 1).map(item => {
       return { name : `${item.title}` , data : item , queueName: 'scrape' , opts: { failParentOnFailure: true }}
     });
     
@@ -30,7 +30,7 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
             queueName: 'zip',
             data: { step: 'zip' },
             opts: { failParentOnFailure: true },
-            children: AllPagesList,
+            children: allPagesList,
           }
         ]
       } 
@@ -82,11 +82,9 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
     });
   
     scrapeworker.on('completed',async job => {
-      console.log(`${job.id} has completed`);
     });
     
     scrapeworker.on('failed', async (job, err) => {
-      console.log(`${job.id} has failed with ${err.message}`);
       await redisConnection.set("busy" , "no");
       throw new Error("problem to scrape queue")
     });
@@ -106,7 +104,7 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
   
     const mailworker = new Worker("mailer" , async job => {
         try {
-            await backupFinishEmail(email)
+            await backupFinishEmail(domain , email)
         } catch (error) {
             throw new Error(error.message)
         }

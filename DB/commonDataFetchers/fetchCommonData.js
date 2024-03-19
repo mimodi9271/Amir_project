@@ -3,12 +3,12 @@ import getPages from "../queries/pages.js";
 import getPagePosts from "../queries/pagePosts.js";
 
 
-const fetchCommonData = async (domain , pool) => {
+const fetchCommonData = async (domain , mysqlConnectionPool) => {
      
   // get websiteId
   let website_id = "";
   try {
-    website_id = await getWebsiteId(domain , pool)
+    website_id = await getWebsiteId(domain , mysqlConnectionPool)
   } catch (error) {
     throw new Error(error.message)
   }
@@ -17,7 +17,7 @@ const fetchCommonData = async (domain , pool) => {
   // get data drom pages table
   let pages = ""
   try {
-    pages = await getPages(website_id , pool);
+    pages = await getPages(website_id , mysqlConnectionPool);
   } catch (error) {
     throw new Error(error.message)
   }
@@ -26,7 +26,7 @@ const fetchCommonData = async (domain , pool) => {
   // get data from pages_posts table
   let page_posts = ""
   try {
-    page_posts = await getPagePosts(website_id , pool)
+    page_posts = await getPagePosts(website_id , mysqlConnectionPool)
   } catch (error) {
     throw new Error(error.message)
   }

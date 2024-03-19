@@ -15,7 +15,6 @@ const addPagePosts = (generator , page_posts , joinCategries , joinTags) => {
         
     
         let  thumbnaiId = generator.rId();
-        console.log(thumbnaiId)
         generator.addAttachment({
             id : thumbnaiId,
             url : item.picture,

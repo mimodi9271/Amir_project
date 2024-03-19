@@ -1,8 +1,8 @@
 
 
-const getUsers = async(website_id , pool) => {
+const getUsers = async(website_id , mysqlConnectionPool) => {
     try {
-        const users = await pool.query(`
+        const users = await mysqlConnectionPool.query(`
         SELECT users.name , users.last_name , users.id , users.username , users.email_address , website_staff.website_id
         FROM users
         INNER JOIN website_staff
