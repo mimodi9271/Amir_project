@@ -1,21 +1,19 @@
-import { Queue , Worker , FlowProducer, tryCatch } from 'bullmq';
+import { Worker , FlowProducer} from 'bullmq';
 import scrape from 'website-scraper';
 import { zip } from 'zip-a-folder';
-import transporter from '../Config/mailConf.js';
+import transporter from '../../config/mailConf.js';
 import 'dotenv/config';
-import getAllPage from '../Utilities/getAllPage.js';
+import getWebsitePagesURL from '../../utilities/getWebsitePagesURL.js';
+import backupFinishEmail from '../../emails/backupFinishEmail.js';
 
-
-const initializeBullMq =async (pages , page_posts , redisConnection , domain , email) => {
+const htmlBackup =async (pages , page_posts , redisConnection , domain , email) => {
     
-    let AllPagesList = await getAllPage(pages , page_posts , domain);
-
-  
+    let allPagesList = await getWebsitePagesURL(pages , page_posts , domain);
   
     const flowProducer = new FlowProducer({ connection : redisConnection });
     
   
-    AllPagesList = AllPagesList.slice(0 , 3).map(item => {
+    allPagesList = allPagesList.slice(0 , 1).map(item => {
       return { name : `${item.title}` , data : item , queueName: 'scrape' , opts: { failParentOnFailure: true }}
     });
     
@@ -32,7 +30,7 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
             queueName: 'zip',
             data: { step: 'zip' },
             opts: { failParentOnFailure: true },
-            children: AllPagesList,
+            children: allPagesList,
           }
         ]
       } 
@@ -65,7 +63,6 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
       throw new Error("cannot make queue")
     }
   
-    
   
     const scrapeworker = new Worker('scrape', async job => {
         let options = {
@@ -85,11 +82,9 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
     });
   
     scrapeworker.on('completed',async job => {
-      console.log(`${job.id} has completed`);
     });
     
     scrapeworker.on('failed', async (job, err) => {
-      console.log(`${job.id} has failed with ${err.message}`);
       await redisConnection.set("busy" , "no");
       throw new Error("problem to scrape queue")
     });
@@ -97,6 +92,7 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
   
     const zipworker = new Worker('zip', async job => {
       try {
+        await redisConnection.set("busy" , "no");
         await zip( `./${domain}` , `./${domain}.zip` );
       } catch (error) {
         throw new Error("the zip has a problem")
@@ -107,18 +103,10 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
 
   
     const mailworker = new Worker("mailer" , async job => {
-        const mailData = {
-            from: process.env.mymailname_mailer,
-            to: email,
-            subject: 'Sending Email using Node.js',
-            text: 'That was easy!',
-        };
-
         try {
-            const res = await transporter.sendMail(mailData);
-            if(res) console.log("the url has send")
+            await backupFinishEmail(domain , email)
         } catch (error) {
-            throw new Error("mailer has a problem")
+            throw new Error(error.message)
         }
 
     }, {
@@ -126,4 +114,4 @@ const initializeBullMq =async (pages , page_posts , redisConnection , domain , e
     })
 }
 
-export default initializeBullMq
+export default htmlBackup;

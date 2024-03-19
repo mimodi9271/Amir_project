@@ -1,15 +1,14 @@
-import getWebsiteId from "../Queries/websiteId.js";
-import getPages from "../Queries/pages.js";
-import getPagePost from "../Queries/pagePosts.js";
+import getWebsiteId from "../queries/websiteId.js";
+import getPages from "../queries/pages.js";
+import getPagePosts from "../queries/pagePosts.js";
 
 
-const fetchCommonData = async (domain) => {
+const fetchCommonData = async (domain , mysqlConnectionPool) => {
      
   // get websiteId
   let website_id = "";
   try {
-    website_id = await getWebsiteId(domain)
-    console.log(website_id)
+    website_id = await getWebsiteId(domain , mysqlConnectionPool)
   } catch (error) {
     throw new Error(error.message)
   }
@@ -18,7 +17,7 @@ const fetchCommonData = async (domain) => {
   // get data drom pages table
   let pages = ""
   try {
-    pages = await getPages(website_id);
+    pages = await getPages(website_id , mysqlConnectionPool);
   } catch (error) {
     throw new Error(error.message)
   }
@@ -27,7 +26,7 @@ const fetchCommonData = async (domain) => {
   // get data from pages_posts table
   let page_posts = ""
   try {
-    page_posts = await getPagePost(website_id)
+    page_posts = await getPagePosts(website_id , mysqlConnectionPool)
   } catch (error) {
     throw new Error(error.message)
   }

@@ -1,8 +1,6 @@
 import Joi from "joi";
 
 const validateDomain = (domain) => {
-    // console.log(domain)
-
     const schema = Joi.object({ 
         domain : Joi.string().min(3).max(30).required(), 
       });
