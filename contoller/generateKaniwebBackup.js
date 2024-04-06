@@ -3,6 +3,9 @@ import checkBusyStatus from '../redis/checkBusyStatus.js';
 import wordpressBackup from "../backup/wordpressBackup/wordpressBackup.js";
 import fetchCommonData from "../db/commonDataFetchers/fetchCommonData.js"
 import htmlBackup from "../backup/htmlBackup/htmlBackup.js";
+import fetchExtraData from '../db/commonDataFetchers/fetchExtraData.js';
+import extraDataBackup from '../backup/extraDataBackup/extraDataBackup.js';
+
 
 
 const generateKaniwebBackup = async (dependencies , domain , email) => {
@@ -28,7 +31,25 @@ const generateKaniwebBackup = async (dependencies , domain , email) => {
     } catch (error) {
         throw new Error(error.message)
     }
+
+    
+    let users = "";
+    let comments = "";
+    try {
+      let result = await fetchExtraData(website_id , mysqlConnectionPool);
+      users = result.users;
+      comments = result.comments;
+    } catch (error) {
+      throw new Error(error.message)
+    }
   
+
+    try {
+      extraDataBackup(users, comments, domain)
+    } catch (error) {
+        throw new Error(error.message)
+
+    }
   
     try {
       await wordpressBackup(pages , page_posts , website_id , domain , mysqlConnectionPool)

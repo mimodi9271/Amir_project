@@ -9,7 +9,7 @@ function getPagePostURl(domain , id , slug , title , pageId , date , topic){
       filename : title,
       pageId : pageId , 
       title : title ,
-      directory : `./${domain}/${topic}/${d.slice(0 , 4)}/${d.slice(5 , 7)}/${id}`
+      directory : `./${domain}/htmlbckup/${topic}/${d.slice(0 , 4)}/${d.slice(5 , 7)}/${id}`
     }
   }
 
