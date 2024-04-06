@@ -1,4 +1,4 @@
-const addUsers = (generator , users) => {
+const addAuthors = (generator , users) => {
     users.map(item => {
         generator.addUser({
           username : item.username,
@@ -10,4 +10,4 @@ const addUsers = (generator , users) => {
       })
 }
 
-export default addUsers;
+export default addAuthors;

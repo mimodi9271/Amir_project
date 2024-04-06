@@ -4,7 +4,7 @@ function getPageURl(domain , id , slug , title){
       webUrl : `https://www.${domain}/${id}-${slug}`,
       filename : title, 
       title : title,
-      directory : `./${domain}/${title}/index`
+      directory : `./${domain}/htmlbckup/${title}/index`
     }
   }
 

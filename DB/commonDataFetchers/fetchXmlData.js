@@ -1,14 +1,21 @@
-import get_users from "../queries/users.js";
-import get_categories from "../queries/categories.js";
-import get_tags from "../queries/tags.js";
-
+import getAuthors from "../queries/authors.js";
+import getCategories from "../queries/categories.js";
+import getPostsFiles from "../queries/files.js";
+import getTags from "../queries/tags.js";
 
 
 const fetchXmlData = async (website_id , mysqlConnectionPool) => {
 
-  let users = "";
+  let authors = "";
   try {
-    users = await get_users(website_id , mysqlConnectionPool)
+    authors = await getAuthors(website_id , mysqlConnectionPool)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  let postFiles = "";
+  try {
+    postFiles = await getPostsFiles(website_id , mysqlConnectionPool)
   } catch (error) {
     throw new Error(error.message)
   }
@@ -17,7 +24,7 @@ const fetchXmlData = async (website_id , mysqlConnectionPool) => {
   let joinCategries = "";
   let categories = "";
   try {
-    const result = await get_categories(website_id , mysqlConnectionPool);
+    const result = await getCategories(website_id , mysqlConnectionPool);
     joinCategries = result.joinCategries;
     categories = result.categories;
   } catch (error) {
@@ -28,7 +35,7 @@ const fetchXmlData = async (website_id , mysqlConnectionPool) => {
   let joinTags = "";
   let tags = "";
   try {
-    const result = await get_tags(website_id , mysqlConnectionPool);
+    const result = await getTags(website_id , mysqlConnectionPool);
     joinTags = result.joinTags;
     tags = result.tags;
   } catch (error) {
@@ -36,11 +43,12 @@ const fetchXmlData = async (website_id , mysqlConnectionPool) => {
   }
 
   return {
-    users ,
+    authors ,
     joinCategries ,
     categories ,
     joinTags ,
     tags ,
+    postFiles
   }
 
 }

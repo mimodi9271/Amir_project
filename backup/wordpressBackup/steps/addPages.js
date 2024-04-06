@@ -7,6 +7,19 @@ const addpages = (generator , pages) => {
   
         let slug = `http://localhost/rahatamooz2/?page_id=${item.id}`;
         let imgsercspage = getImgSrc(item.html);
+        imgsercspage = imgsercspage.filter(c => c !== item.social_link_image);
+        
+    
+        let  thumbnaiId = generator.rId();
+        if(item.social_link_image){
+          generator.addAttachment({
+            id : thumbnaiId,
+            url : item.social_link_image,
+            title : item.title,
+            attachment_type : "product_image"
+          })
+        }
+        
   
         imgsercspage.map(url => {
           generator.addAttachment({
