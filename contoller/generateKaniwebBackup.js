@@ -33,19 +33,19 @@ const generateKaniwebBackup = async (dependencies , domain , email) => {
     }
 
     
-    let users = "";
-    let comments = "";
+    let websiteUsers = "";
+    let messages = "";
     try {
       let result = await fetchExtraData(website_id , mysqlConnectionPool);
-      users = result.users;
-      comments = result.comments;
+      websiteUsers = result.websiteUsers;
+      messages = result.messages;
     } catch (error) {
       throw new Error(error.message)
     }
   
 
     try {
-      extraDataBackup(users, comments, domain)
+      extraDataBackup(websiteUsers, messages, domain)
     } catch (error) {
         throw new Error(error.message)
 

@@ -1,25 +1,25 @@
-import getComments from "../queries/comments.js";
-import getUsers from "../queries/users.js";
+import getMessages from "../queries/messages.js";
+import getWebsiteUsers from "../queries/users.js";
 
 const fetchExtraData = async (website_id , mysqlConnectionPool) => {
 
-    let users = "";
+    let websiteUsers = "";
     try {
-        users = await getUsers(website_id , mysqlConnectionPool);
+        websiteUsers = await getWebsiteUsers(website_id , mysqlConnectionPool);
     } catch (error) {
         throw new Error(error.message)
     }
 
-    let comments = "";
+    let messages = "";
     try {
-        comments = await getComments(website_id , mysqlConnectionPool);
+        messages = await getMessages(website_id , mysqlConnectionPool);
     } catch (error) {
         throw new Error(error.message)
     }
 
     return {
-        users ,
-        comments
+        websiteUsers ,
+        messages
     }
 
 }

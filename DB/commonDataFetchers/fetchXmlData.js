@@ -1,6 +1,6 @@
 import getAuthors from "../queries/authors.js";
 import getCategories from "../queries/categories.js";
-import getFiles from "../queries/files.js";
+import getPostsFiles from "../queries/files.js";
 import getTags from "../queries/tags.js";
 
 
@@ -13,9 +13,9 @@ const fetchXmlData = async (website_id , mysqlConnectionPool) => {
     throw new Error(error.message)
   }
 
-  let files = "";
+  let postFiles = "";
   try {
-    files = await getFiles(website_id , mysqlConnectionPool)
+    postFiles = await getPostsFiles(website_id , mysqlConnectionPool)
   } catch (error) {
     throw new Error(error.message)
   }
@@ -48,7 +48,7 @@ const fetchXmlData = async (website_id , mysqlConnectionPool) => {
     categories ,
     joinTags ,
     tags ,
-    files
+    postFiles
   }
 
 }

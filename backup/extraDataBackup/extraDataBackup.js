@@ -3,58 +3,54 @@ import path from "path";
 import { dirname } from 'node:path';
 import fs from "fs"
 import { fileURLToPath } from 'node:url';
+import moment from 'jalali-moment';
 
-const extraDataBackup = (users , comments , domain) => {
+const extraDataBackup = async (websiteUsers , messages , domain) => {
 
     let __dirname = dirname(fileURLToPath(import.meta.url));
     __dirname = __dirname.slice(0 , __dirname.length-23);
 
-    let usersList = [
+    let websiteUsersList = [
         ["نام کاربری" , "رمز عبور" , "نام" , "نام خانوادگی", "آدرس ایمیل" , "شماره تماس"],
     ];
 
-    let commentsList = [
-        ["نام" , "آدرس ایمیل" , "پیغام"]
+    let messagesList = [
+        ["نام" , "آدرس ایمیل" , "ناریخ" , "پیغام"]
     ]
 
-    users.forEach(item => {
+    websiteUsers.forEach(item => {
         let list = [];
         for (const [key, value] of Object.entries(item)) {
             list.push(value)
           }
-        usersList.push(list)
+        websiteUsersList.push(list)
     });
 
-    comments.forEach(item => {
+    messages.forEach(item => {
         let list = [];
-        for (const [key, value] of Object.entries(item)) {
-            list.push(value)
+        for (let [key, value] of Object.entries(item)) {
+            if (key == "received_at"){
+                value = moment(value , 'YYYY-M-D HH:mm:ss').locale('fa').format('YYYY/M/D HH:mm:ss');
+                list.push(value)
+            }else{
+                list.push(value)
+            }
           }
-        commentsList.push(list)
+        messagesList.push(list)
     })
     
-    let usersBuffer = xlsx.build([{name: 'listofusers', data: usersList}]);
-    let commentsBuffer = xlsx.build([{name: 'listofcommnets', data: commentsList}]);
+    let websiteUsersBuffer = xlsx.build([{name: 'listofwebsiteusers', data: websiteUsersList}]);
+    let messagesBuffer = xlsx.build([{name: 'listofmessages', data: messagesList}]);
     
 
     try {
-        fs.mkdir(path.join(__dirname, `${domain}`) , {} , (err) => {
-            fs.mkdir(path.join(__dirname, `${domain}` , "extrabackup") , {} , (err) => {
-                fs.writeFile(path.join(__dirname, `${domain}` , "extrabackup", "لیست کاربران.xlsx"), usersBuffer , "utf-8" , (err , res) => {
-                    fs.writeFile(path.join(__dirname, `${domain}` , "extrabackup", "لیست پیام ها.xlsx"), commentsBuffer , "utf-8" , (err , res) => {
-                    })
-                })
-            });
-        })
+        await fs.promises.mkdir(path.join(__dirname , `${domain}`));
+        await fs.promises.mkdir(path.join(__dirname, `${domain}` , "extrabackup"));
+        await fs.promises.writeFile(path.join(__dirname, `${domain}` , "extrabackup" , "لیست کاربران.xlsx") , websiteUsersBuffer)
+        await fs.promises.writeFile(path.join(__dirname, `${domain}` , "extrabackup" , "لیست پیام ها.xlsx") , messagesBuffer)
 
-        
-            
-        
-        
-        
-        
     } catch (error) {
-        throw new Error("problem to make extra data backup")
+        throw new Error("problem to make extra data backup :" + error.message)
     }
     
     

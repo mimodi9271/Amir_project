@@ -1,6 +1,6 @@
-const getFiles = async (website_id , mysqlConnectionPool) => {
+const getPostsFiles = async (website_id , mysqlConnectionPool) => {
     try {
-        const files = await mysqlConnectionPool.query(
+        const postFiles = await mysqlConnectionPool.query(
             `SELECT * 
              FROM  post_files
              where post_id IN (
@@ -8,11 +8,11 @@ const getFiles = async (website_id , mysqlConnectionPool) => {
                 FROM page_posts
                 where website_id = ?)` , [website_id]);
 
-        return files[0]
+        return postFiles[0]
     } catch (error) {
         throw new Error("cannnot fetch categories")
     }
 }
 
 
-export default getFiles;
+export default getPostsFiles;

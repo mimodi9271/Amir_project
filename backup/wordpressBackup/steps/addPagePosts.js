@@ -1,14 +1,14 @@
 import getImgSrc from 'get-img-src';
 
 
-const addPagePosts = (generator , page_posts , joinCategries , joinTags , files) => {
+const addPagePosts = (generator , page_posts , joinCategries , joinTags , postFiles) => {
     page_posts.map((item , index) => {
         
         let categoriesitem = joinCategries.filter(i => i.post_id == item.id ).map(c => ({slug : c.slug , name : c.title}));
     
         let tagsitem = joinTags.filter(i => i.post_id == item.id ).map(c => ({slug : c.title , name : c.title}));
 
-        let fileItems = files.filter(i => i.post_id == item.id);
+        let fileItems = postFiles.filter(i => i.post_id == item.id);
         let addFilesTag = "";
         fileItems.forEach(item => {
           addFilesTag = `${addFilesTag} <br> <a href=${item.url}>${item.title}</a>`

@@ -31,7 +31,7 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , mysqlC
   let categories = "";
   let joinTags = "";
   let tags = "";
-  let files = "";
+  let postFiles = "";
   try {
     const result = await fetchXmlData(website_id , mysqlConnectionPool);
     authors = result.authors;
@@ -39,7 +39,7 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , mysqlC
     categories = result.categories;
     joinTags = result.joinTags;
     tags = result.tags;
-    files = result.files
+    postFiles = result.postFiles
   } catch (error) {
     throw new Error(error.message)
   }
@@ -62,7 +62,7 @@ const wordpressBackup = async (pages , page_posts , website_id , domain , mysqlC
 
   
   // add post to xml
-  addPagePosts(generator , page_posts , joinCategries , joinTags , files)
+  addPagePosts(generator , page_posts , joinCategries , joinTags , postFiles)
 
 
   const xmlstring = generator.stringify();
