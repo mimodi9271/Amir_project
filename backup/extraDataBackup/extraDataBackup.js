@@ -4,6 +4,7 @@ import { dirname } from 'node:path';
 import fs from "fs"
 import { fileURLToPath } from 'node:url';
 import moment from 'jalali-moment';
+import { tryCatch } from 'bullmq';
 
 const extraDataBackup = async (websiteUsers , messages , domain) => {
 
@@ -38,9 +39,24 @@ const extraDataBackup = async (websiteUsers , messages , domain) => {
           }
         messagesList.push(list)
     })
+
+
+    let websiteUsersBuffer = ""
+    try {
+        websiteUsersBuffer = xlsx.build([{name: 'listofwebsiteusers', data: websiteUsersList}]);
+    } catch (error) {
+        console.log(error , "users .....")
+    }
+
+
+
+    let messagesBuffer = "";
+    try {
+        messagesBuffer = xlsx.build([{name: 'listofmessages', data: messagesList}]);
+    } catch (error) {
+        console.log(error , "messages ......")
+    }
     
-    let websiteUsersBuffer = xlsx.build([{name: 'listofwebsiteusers', data: websiteUsersList}]);
-    let messagesBuffer = xlsx.build([{name: 'listofmessages', data: messagesList}]);
     
 
     try {

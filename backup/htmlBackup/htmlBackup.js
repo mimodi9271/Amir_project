@@ -9,8 +9,6 @@ import backupFinishEmail from '../../emails/backupFinishEmail.js';
 const htmlBackup =async (pages , page_posts , redisConnection , domain , email) => {
     
     let allPagesList = await getWebsitePagesURL(pages , page_posts , domain);
-    
-
   
     const flowProducer = new FlowProducer({ connection : redisConnection });
     
@@ -55,7 +53,7 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
               defaultJobOptions : {
               removeOnComplete : true,
               removeOnFail : true,
-              // attempts : 2
+              attempts : 2
             },
           }
         }
@@ -75,12 +73,13 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
         try {
           await scrape(options)
         } catch (error) {
+          console.log(error , ".....")
           throw new Error("cannot backup or scrape pages")
         }
   
     }, {
       connection: redisConnection,
-      concurrency: 5,
+      concurrency: 3,
     });
   
     scrapeworker.on('completed',async job => {
