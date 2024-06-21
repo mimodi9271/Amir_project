@@ -13,7 +13,7 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
     const flowProducer = new FlowProducer({ connection : redisConnection });
     
   
-    allPagesList = allPagesList.slice(0 , 1).map(item => {
+    allPagesList = allPagesList.map(item => {
       return { name : `${item.title}` , data : item , queueName: 'scrape' , opts: { failParentOnFailure: true }}
     });
     
@@ -53,7 +53,7 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
               defaultJobOptions : {
               removeOnComplete : true,
               removeOnFail : true,
-              // attempts : 2
+              attempts : 2
             },
           }
         }
@@ -73,12 +73,13 @@ const htmlBackup =async (pages , page_posts , redisConnection , domain , email) 
         try {
           await scrape(options)
         } catch (error) {
+          console.log(error , ".....")
           throw new Error("cannot backup or scrape pages")
         }
   
     }, {
       connection: redisConnection,
-      concurrency: 5,
+      concurrency: 3,
     });
   
     scrapeworker.on('completed',async job => {
